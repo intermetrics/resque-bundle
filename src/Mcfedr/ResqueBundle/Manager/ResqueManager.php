@@ -6,8 +6,6 @@ use Mcfedr\ResqueBundle\Resque\Job;
 
 class ResqueManager
 {
-    const JOB_CLASS = 'Mcfedr\ResqueBundle\Resque\Job';
-
     /**
      * @var array
      */
@@ -35,8 +33,9 @@ class ResqueManager
      * @param string $defaultQueue
      * @param bool   $debug         if debug is true then no calls to Resque will be made
      * @param bool   $trackStatus   Set to true to be able to monitor the status of jobs
+     * @param string $jobClass
      */
-    public function __construct($host, $port, $kernelOptions, $defaultQueue, $prefix, $debug, $trackStatus)
+    public function __construct($host, $port, $kernelOptions, $defaultQueue, $prefix, $debug, $trackStatus, $jobClass)
     {
         $this->defaultQueue = $defaultQueue;
         $this->setKernelOptions($kernelOptions);
@@ -48,6 +47,7 @@ class ResqueManager
             }
         }
         $this->trackStatus = $trackStatus;
+        $this->jobClass = $jobClass;
     }
 
     /**
@@ -104,13 +104,13 @@ class ResqueManager
         $trackJobStatus = $trackStatus || $this->trackStatus;
 
         if ($when) {
-            \ResqueScheduler::enqueueAt($when, $queue, Job::class, $args, $trackJobStatus);
+            \ResqueScheduler::enqueueAt($when, $queue, $this->jobClass, $args, $trackJobStatus);
 
-            return new JobDescription($when, $queue, Job::class, $args, $trackJobStatus);
+            return new JobDescription($when, $queue, $this->jobClass, $args, $trackJobStatus);
         } else {
-            $id = \Resque::enqueue($queue, Job::class, $args, $trackJobStatus);
+            $id = \Resque::enqueue($queue, $this->jobClass, $args, $trackJobStatus);
 
-            return new JobDescription(null, $queue, Job::class, $args, $trackJobStatus, $id);
+            return new JobDescription(null, $queue, $this->jobClass, $args, $trackJobStatus, $id);
         }
     }
 

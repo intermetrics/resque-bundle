@@ -5,6 +5,7 @@ parameters:
     mcfedr_resque.debug: ~
     mcfedr_resque.track_status: ~
     mcfedr_resque.prefix: ~
+    mcfedr_resque.job_class: ~
 
 services:
     mcfedr_resque.manager:
@@ -20,3 +21,4 @@ services:
             - "%mcfedr_resque.prefix%"
             - "%mcfedr_resque.debug%"
             - "%mcfedr_resque.track_status%"
+            - "%mcfedr_resque.job_class%"

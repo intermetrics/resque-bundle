@@ -25,5 +25,6 @@ class McfedrResqueExtension extends Extension
             $container->setParameter('mcfedr_resque.prefix', $config['prefix']);
         }
         $container->setParameter('mcfedr_resque.track_status', $config['track_status']);
+        $container->setParameter('mcfedr_resque.job_class', $config['job_class']);
     }
 }

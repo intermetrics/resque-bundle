@@ -18,6 +18,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('default_queue')->defaultValue('default')->cannotBeEmpty()->end()
                 ->scalarNode('prefix')->end()
                 ->booleanNode('track_status')->defaultFalse()->end()
+                ->scalarNode('job_class')->defaultValue('Mcfedr\ResqueBundle\Resque\Job')->cannotBeEmpty()->end()
             ->end()
         ->end();
 
